@@ -6,9 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.os.Bundle
 import android.widget.Toast
 import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.StreetViewPanorama
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapOperationUtils {
@@ -93,6 +95,12 @@ class MapOperationUtils {
             "t" -> {
                 mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
             }
+        }
+    }
+
+    fun initMap(savedInstanceState: Bundle?,mStreetViewPanorama: StreetViewPanorama,panoid:String){
+        if (savedInstanceState == null) {
+            mStreetViewPanorama.setPosition(panoid)
         }
     }
 }
