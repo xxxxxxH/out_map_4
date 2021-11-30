@@ -88,4 +88,8 @@ class StreetViewUtils {
             EventBus.getDefault().post(MessageEvent("marker", marker))
         }
     }
+
+    fun setPosition(mStreetViewPanorama: StreetViewPanorama,pannoId:String){
+        mStreetViewPanorama.setPosition(pannoId)
+    }
 }

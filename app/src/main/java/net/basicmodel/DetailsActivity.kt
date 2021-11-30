@@ -2,10 +2,13 @@ package net.basicmodel
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.StreetViewPanorama
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment
+import com.pacific.adapter.AdapterUtils
+import com.pacific.adapter.AdapterViewHolder
 import com.pacific.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.layout_f_i.*
 import net.adapter.Item
@@ -14,12 +17,12 @@ import net.http.RequestService
 import net.http.RetrofitUtils
 import net.utils.DataHandleUtils
 import net.utils.MapOperationUtils
+import net.utils.StreetViewUtils
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -59,6 +62,17 @@ class DetailsActivity : AppCompatActivity() {
                     }
                     recycler.layoutManager = LinearLayoutManager(this@DetailsActivity)
                     recycler.adapter = adapter
+                    adapter.onClickListener = View.OnClickListener {
+                        val holder: AdapterViewHolder = AdapterUtils.getHolder(it)
+                        val dataEntity: DataEntity = data[holder.bindingAdapterPosition]
+                        if (entity!!.fife) {
+                            StreetViewUtils.get()
+                                .setPosition(mStreetViewPanorama!!, "F:" + dataEntity.pannoId)
+                        } else {
+                            StreetViewUtils.get()
+                                .setPosition(mStreetViewPanorama!!, dataEntity.pannoId)
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -76,7 +90,7 @@ class DetailsActivity : AppCompatActivity() {
                 MapOperationUtils.get()
                     .initMap(savedInstanceState, mStreetViewPanorama!!, entity!!.panoid)
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
